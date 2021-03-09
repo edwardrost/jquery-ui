@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jQuery UI test task</title>
+    <link rel="stylesheet" type="text/css" href="jquery-ui.css">
+    <style>
+        #red, #green, #blue {
+            float: left;
+            clear: left;
+            width: 300px;
+            margin: 15px;
+        }
+        #swatch {
+            width: 120px;
+            height: 100px;
+            margin-top: 18px;
+            margin-left: 350px;
+            background-image: none;
+            display: flex;
+            text-align: center;
+            align-items: center;
+        }
+        #red .ui-slider-range { background: #ef2929; }
+        #red .ui-slider-handle { border-color: #ef2929; }
+        #green .ui-slider-range { background: #8ae234; }
+        #green .ui-slider-handle { border-color: #8ae234; }
+        #blue .ui-slider-range { background: #729fcf; }
+        #blue .ui-slider-handle { border-color: #729fcf; }
+    </style>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+    $( function() {
+        function hexFromRGB(r, g, b) {
+        var hex = [
+            r.toString( 16 ),
+            g.toString( 16 ),
+            b.toString( 16 )
+        ];
+        $.each( hex, function( nr, val ) {
+            if ( val.length === 1 ) {
+            hex[ nr ] = "0" + val;
+            }
+        });
+        return hex.join( "" ).toUpperCase();
+        }
+
+        function refreshSwatch() {
+        var red = $( "#red" ).slider( "value" ),
+            green = $( "#green" ).slider( "value" ),
+            blue = $( "#blue" ).slider( "value" ),
+            hex = hexFromRGB( red, green, blue );
+        if ($('#backgroundcolor').is(':checked')) {
+            $( "#swatch" ).css( "background-color", "#" + hex );
+        }
+        else {
+            $( "#swatch" ).css( "color", "#" + hex );
+        }
+        
+        }
+    
+        $( "#red, #green, #blue" ).slider({
+        orientation: "horizontal",
+        range: "min",
+        max: 255,
+        value: 127,
+        slide: refreshSwatch,
+        change: refreshSwatch
+        });
+        $( "#red" ).slider( "value", 255 );
+        $( "#green" ).slider( "value", 140 );
+        $( "#blue" ).slider( "value", 60 );
+        
+        $( "#radio" ).controlgroup();
+
+        $("form").on("change", refreshSwatch);
+    });
+    </script>
+</head>
+<body>
+    <!-- ======= GroupControl ======= -->
+    <form>
+        <fieldset>
+          <legend>Select</legend>
+          <div id="radio">
+            <input type="radio" id="color" name="project" value="color">
+            <label for="color">color</label>
+       
+            <input type="radio" id="backgroundcolor" name="project" value="backgroundcolor" checked="checked">
+            <label for="backgroundcolor">backgroundColor</label>
+          </div>
+        </fieldset>
+      </form>
+       
+    <!-- ======= Ranges =======  -->
+    <div class="ui-widget-content" style="border:0;">
+         
+        <div id="red"></div>
+        <div id="green"></div>
+        <div id="blue"></div>
+         
+        <div id="swatch" class="ui-widget-content ui-corner-all">Lorem ipsum dolor sit amet consectetur adipisicing elit...</div>
+    </div>
+</body>
+</html>
